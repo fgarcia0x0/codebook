@@ -11,23 +11,15 @@ namespace codebook::algorithms::sorting
 			  std::predicate<std::iter_value_t<RandomIter>,
 			  				 std::iter_value_t<RandomIter>>
 			  				 Comparator = std::less<>>
-	constexpr void insertion_sort(RandomIter begin,
+	constexpr void selection_sort(RandomIter begin,
 								  RandomIter end,
 								  Comparator&& cmp = {})
 	{
-		RandomIter prev{ };
-
-		for (RandomIter i = std::next(begin); i < end; ++i)
+		for (RandomIter i = begin; i < end - 1; ++i)
 		{
-			for (RandomIter curr = i; curr > begin; --curr)
-			{
-				prev = std::prev(curr);
-
-				if (cmp(*prev, *curr))
-					break;
-
-				std::iter_swap(prev, curr);
-			}
+			RandomIter min = std::min_element(i, end, std::forward<Comparator>(cmp));
+			if (min != i)
+				std::iter_swap(min, i);
 		}
 	}
 }
